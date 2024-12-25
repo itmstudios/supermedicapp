@@ -1,0 +1,26 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<h3 class="title-text">Онлайн-консультация</h3>
+<div class="container">
+    <div id="description-block" class="doctor-info">
+        {% if info %}
+        {% for inf in info %}
+        <p style="width: 100%;">{{ inf.title }}</p>
+        <pre>{{ inf.description }}</pre>
+        {% endfor %}
+        {% else %}
+        <h3>Ошибка</h3>
+        {% endif %}
+    </div>
+    <div class="arrow-button arrow-button-scroll up-down-buttons">
+        <button id="up-button">↑</button>
+        <button id="down-button">↓</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/other/back_button.js' %}?3.0"></script>
+{% endblock %}

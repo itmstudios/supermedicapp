@@ -1,0 +1,33 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container"  data-telegram-id="{{ telegram_id }}" data-appointment-date="{{ appointment_date }}">
+    <div class="inner">
+        <div id="user-info-block">
+            <h3>ИЗМЕНИТЬ РАСПИСАНИЕ</h3>
+            <hr class="divider">
+            <form id="dateTimeForm">
+            {% csrf_token %}
+                <div id="new_work_hours"></div>
+                <div id="add-work-date-time-block">
+                    <button type="button" onclick="addDateTime()" class="arrow-time-button">↓</button>
+                </div>
+                <div id="delete-date-time-block" style="display: none;">
+                    <button type="button" onclick="removeDateTime()" class="arrow-time-button">↑</button>
+                </div>
+            </form>
+        </div>
+<!--        <form action="/select_specialist/" method="post">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" id="temp-btn">-->
+<!--                <p>Dalee</p>-->
+<!--            </button>-->
+<!--        </form>-->
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+    <script src="{% static 'supermedicapp/js/doctors_menu/add_work_hours.js' %}?1.0"></script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text"></h3>
+<div class="container">
+    <div class="inner">
+        <div class="image-info">
+            <img src="{{doctor_description.photo.url}}" alt="" class="doctor-image"><br>
+        </div><br>
+        {{ doctor_description.doctor.last_name }} {{ doctor_description.doctor.first_name }} {{ doctor_description.doctor.middle_name|default:" " }}<br>
+        <pre>{{ doctor_description.about }}</pre>
+        <div class="arrow-button arrow-button-scroll up-down-buttons">
+            <button id="up-button">↑</button>
+            <button id="down-button">↓</button>
+        </div>
+        <br>
+
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/main_menu/our_doctors_specialization.js' %}?33.0"></script>
+{% endblock %}

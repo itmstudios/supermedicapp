@@ -1,0 +1,40 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block css_additional %}
+<link rel="stylesheet" href="{% static 'supermedicapp/css/date_picker.css' %}?1.0">
+{% endblock %}
+
+{% block content %}
+<body id="calendar-body" style="display: none;">
+    <div class="wrapper" data-telegram-id="{{ telegram_id }}">
+        <header>
+            <div class="icons">
+                <span id="prev" class="chevron material-symbols-rounded">&lt;</span>
+                <p class="current-date">Сегодня</p>
+                <span id="next" class="chevron material-symbols-rounded">&gt;</span>
+            </div>
+        </header>
+        <div class="calendar">
+            <ul class="weeks">
+                <li>Пн</li>
+                <li>Вт</li>
+                <li>Ср</li>
+                <li>Чт</li>
+                <li>Пт</li>
+                <li>Сб</li>
+                <li>Вс</li>
+            </ul>
+            <ul class="days" data-backend-dates="{{ backend_dates_json }}"></ul>
+        </div>
+    </div>
+    <div id="comment">
+        Зелёным отмечены даты с внесенным расписанием. Вы можете редактировать свое расписание, нажав на необходимый день.
+    </div>
+</body>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/other/back_button_doc.js' %}"></script>
+<script src="{% static 'supermedicapp/js/doctors_menu/calendar.js' %}?1.0"></script>
+{% endblock %}

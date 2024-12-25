@@ -1,0 +1,36 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text"></h3>
+<div class="container">
+    <div class="inner">
+        {% for specialization in specializations %}
+            <form action="/select_specialist/" method="get"  class="specialist-page-form" id="select-specialization">
+                {% csrf_token %}
+                <button type="submit" class="button-row specialist-page-btn" data-specialization-id="{{ specialization.id }}"
+                                      data-specialization-name="{{ specialization.name }}">
+                    <p class="button-text">{{ specialization.name }}</p>
+                    <div class="btn-arrow"></div>
+                </button>
+            </form>
+        {% endfor %}
+    <div class="arrow-button arrow-button-scroll up-down-buttons">
+        <button id="up-button">↑</button>
+        <button id="down-button">↓</button>
+    </div>
+    </div>
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+<!--    <img class="doctor-img" style="margin-bottom: auto;" src="{% static 'supermedicapp/images/doctor-with-tablet.png' %}?3.0"/>-->
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/patients_menu/select_specialization.js' %}?33.0"></script>
+{% endblock %}

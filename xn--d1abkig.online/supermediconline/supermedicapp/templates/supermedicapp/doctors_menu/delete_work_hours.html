@@ -1,0 +1,36 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" data-telegram-id="{{ telegram_id }}" data-appointment-date="{{ appointment_date }}">
+    <div class="inner">
+        {% if appointments %}
+        <div id="appointments-container">
+            <h3>ИЗМЕНИТЬ РАСПИСАНИЕ</h3>
+            <hr class="divider">
+            <p class="hint">Выберите время, которое хотите удалить</p><br>
+            <div class="appointments-row">
+                {% for appointment in appointments %}
+                    <div class="appointments">
+                        <input type="checkbox" class="time-checkbox" data-appointment-id="{{ appointment.id }}">
+                        {{ appointment.appointment_time }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+<!--        <form action="/select_specialist/" method="post">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" id="temp-btn">-->
+<!--                <p>Dalee</p>-->
+<!--            </button>-->
+<!--        </form>-->
+        {% else %}
+        <p>Расписание не найдено</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+    <script src="{% static 'supermedicapp/js/doctors_menu/delete_work_hours.js' %}?1.0"></script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block css_additional %}
+<link rel="stylesheet" href="{% static 'supermedicapp/css/style.css' %}?3.0">
+<link rel="stylesheet" href="{% static 'supermedicapp/css/selects.css' %}?3.0">
+<link rel="stylesheet" href="{% static 'supermedicapp/css/date_picker.css' %}">
+{% endblock %}
+
+{% block content %}
+<body id="calendar-body" style="display: none;">
+    <div class="wrapper" data-specialization-id="{{ specialization_id }}" data-doctor-id="{{ doctor_id }}">
+        <header>
+            <div class="icons">
+                <span id="prev" class="chevron material-symbols-rounded">&lt;</span>
+                <p class="current-date" style="text-align: center;">Сегодня</p>
+                <span id="next" class="chevron material-symbols-rounded">&gt;</span>
+            </div>
+        </header>
+        <div class="calendar">
+            <ul class="weeks">
+                <li>Пн</li>
+                <li>Вт</li>
+                <li>Ср</li>
+                <li>Чт</li>
+                <li>Пт</li>
+                <li>Сб</li>
+                <li>Вс</li>
+            </ul>
+            <ul class="days" data-backend-dates="{{ backend_dates_json }}"></ul>
+        </div>
+    </div>
+    <div id="comment">
+        Зелёным отмечены даты, доступные для записи.
+    </div>
+    <br>
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+</body>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/patients_menu/select_date.js' %}?3.0"></script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container container-start-page">
+    <div class="inner-start-page">
+        <form action="/select_specialist/" method="post" class="start-page-form">
+            {% csrf_token %}
+            <button type="submit" class="button-row start-page-btn">
+                <p class="button-text">Записаться к врачу</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+        <form action="/my_appointments/" method="post" class="start-page-form">
+            {% csrf_token %}
+            <button type="submit" class="button-row start-page-btn">
+                <p class="button-text">Мои записи</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+        <form action="/our_doctors/" method="post" class="start-page-form">
+            {% csrf_token %}
+            <button type="submit" class="button-row start-page-btn">
+                <p class="button-text">Наши врачи</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+        <form action="/help_info/" method="post" class="start-page-form">
+            {% csrf_token %}
+            <button type="submit" class="button-row start-page-btn">
+                <p class="button-text">Чем поможет консультация</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+        <form action="/text_to_admin/" method="post" class="start-page-form">
+            {% csrf_token %}
+            <button type="submit" class="button-row start-page-btn">
+                <p class="button-text">Написать в поддержку</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/main_menu/start.js' %}?3.0"></script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" data-telegram-id="{{ telegram_id }}" data-appointment-date="{{ appointment_date }}">
+    <div class="inner">
+    {% if free_appointments or booked_appointments %}
+        {% for appointment in free_appointments %}
+            <div class="appointments">
+                <div class="time-rectangle" data-appointment-id="{{ appointment.id }}" style="background: green;">
+                        {{ appointment.appointment_time|time }}
+                </div>
+            </div>
+        {% endfor %}
+        {% for appointment in booked_appointments %}
+            <div class="appointments">
+                <div class="time-rectangle" data-appointment-id="{{ appointment.id }}" style="background: red;">
+                        {{ appointment.appointment_time|time }}
+                </div>
+            </div>
+        {% endfor %}
+        <p style="text-align: left; font-size: 12px;">* Зеленым отмечено время, на которое пока никто не записался, красным - время, занятое пациентом.<br>
+        Чтобы добавить новое время или удалить существующее, нажмите на кнопки ниже.</p>
+
+    {% else %}
+        <p style="text-align: center;">Расписание на выбранную дату не найдено. Добавьте его, нажав на кнопку ниже.</p>
+    {% endif %}
+    </div>
+
+    <form action="/add_work_hours/" method="post" style="padding: none;" class="update-work-time" id="add-work-hours-form">
+        {% csrf_token %}
+        <button type="submit" id="add-btn">
+            <span style="text-align: center">Добавить время</span>
+        </button>
+    </form>
+    {% if free_appointments %}
+    <form action="/delete_work_hours/" method="post" style="padding: none;" class="update-work-time" id="delete-work-hours-form">
+        {% csrf_token %}
+        <button type="submit" id="delete-btn">
+            <span style="text-align: center">Удалить время</span>
+        </button>
+    </form>
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js_additional %}
+    <script src="{% static 'supermedicapp/js/doctors_menu/time_preview.js' %}?1.0"></script>
+{% endblock %}

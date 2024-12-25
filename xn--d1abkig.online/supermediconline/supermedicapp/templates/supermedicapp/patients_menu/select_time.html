@@ -1,0 +1,41 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text"></h3>
+<div class="container" data-specialization-id="{{ specialization_id }}"
+                       data-doctor-id="{{ doctor_id }}"
+                       data-appointment-date="{{ appointment_date }}">
+    <div class="inner">
+        {% if appointments %}
+            {% for appointment in appointments %}
+                <form action="/select_specialist/" method="get" class="specialist-page-form" id="select-time">
+                    {% csrf_token %}
+                    <button type="submit" class="button-row specialist-page-btn"
+                            data-appointment-id="{{ appointment.id }}"
+                            data-specialization-id="{{ appointment.doctor_specialization.specialization.id }}"
+                            data-doctor-id="{{ appointment.doctor_specialization.doctor.id }}"
+                            data-appointment-date="{{ appointment_date }}"
+                           data-appointment-time="{{ appointment.appointment_time|time }}">
+                        <p class="button-text">{{ appointment.appointment_time|time }}</p>
+                        <div class="btn-arrow"></div>
+                    </button>
+                </form>
+            {% endfor %}
+        {% else %}
+            <p>Не найдено доступного времени</p>
+        {% endif %}
+    </div>
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/patients_menu/select_time.js' %}?33.0"></script>
+{% endblock %}

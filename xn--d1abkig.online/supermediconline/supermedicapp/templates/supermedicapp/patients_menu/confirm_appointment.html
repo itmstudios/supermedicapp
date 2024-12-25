@@ -1,0 +1,59 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<h3 class="title-text">Информация о пациенте</h3>
+<div class="container" data-appointment-id="{% if appointment %}{{ appointment.id }}{% endif %}"
+    data-specialization-id="{% if specialization_id %}{{ specialization_id }}{% endif %}"
+    data-doctor-id="{% if doctor_id %}{{ doctor_id }}{% endif %}"
+    data-appointment-date="{% if appointment_date %}{{ appointment_date }}{% endif %}"
+    data-appointment-time="{% if appointment_time %}{{ appointment_time }}{% endif %}">
+    <div id="inner">
+        <div id="user-info-block">
+            <form id="user-info-form" method="post">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="last-name">ФАМИЛИЯ:</label>
+                        <input type="text" id="last-name" name="user_last_name" class="form-control"
+                            value="{% if user %}{{ user.last_name }}{% endif %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">ИМЯ:</label>
+                        <input type="text" id="first-name" name="user_first_name" class="form-control"
+                            value="{% if user %}{{ user.first_name }}{% endif %}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name">ОТЧЕСТВО:</label>
+                        <input type="text" id="middle-name" name="user_middle_name" class="form-control"
+                            value="{% if user %}{{ user.middle_name|default:' ' }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">ТЕЛЕФОН:</label>
+                        <input type="tel" id="phone-number" name="user_phone_number" class="form-control"
+                            value="{% if user %}{{ user.phone_number|default:' ' }}{% else %}{% endif %}">
+                    </div>
+
+                </div>
+                <br>
+<!--                <div>-->
+<!--                    <br>-->
+<!--                    <button id="next-btn" class="button-row">ПРОДОЛЖИТЬ</button>-->
+<!--                </div>-->
+            </form>
+            <br>
+            <form action="/text_to_admin/" method="post" class="specialist-footer">
+                {% csrf_token %}
+                <button type="submit" class="last-button button-row">
+                    <p class="last-button-text">Задать вопрос администратору</p>
+                    <div class="last-btn-arrow"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/patients_menu/confirm_appointment.js' %}?3.0"></script>
+{% endblock %}

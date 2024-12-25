@@ -1,0 +1,41 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text">Мои записи</h3>
+<div class="container">
+    {% if appointments %}
+    <div class="inner" style="align-items: center;" id="appointments-carousel">
+        {% for appointment in appointments %}
+        <div class="appointments-item">
+        <div class="doctor-card" style="display: block;">
+            <p style="color: #d3325b;">
+                {{appointment.appointment_time}}<br>
+                {{appointment.doctor_specialization.specialization.name}},
+                {{appointment.doctor_specialization.consultation_price|default:"-"}} ₽<br>
+                {{appointment.doctor_specialization.doctor.last_name}}
+                {{appointment.doctor_specialization.doctor.first_name}}
+                {{appointment.doctor_specialization.doctor.middle_name|default:" "}}
+            </p>
+        </div>
+        </div>
+        {% endfor %}
+        <div class="arrow-button">
+            <button id="prev-button">←</button>
+            <button id="next-button">→</button>
+        </div>
+    </div>
+    {% else %}
+    <div class="start-page-form">
+        <div class="button-row start-page-btn">
+            <p class="button-text">Нет предстоящих записей</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/other/back_button.js' %}"></script>
+<script src=" {% static 'supermedicapp/js/patients_menu/my_appointments.js' %}?3.0"></script>
+{% endblock %}

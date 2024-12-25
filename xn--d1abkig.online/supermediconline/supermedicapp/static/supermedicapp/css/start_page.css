@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+.container-start-page {
+    --r: 15px;
+    --b: 2px;
+    align-items: center;
+    background: linear-gradient(to right, rgb(132, 246, 223), rgb(76, 198, 249));
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    padding: 2px 0 2px 0;
+}
+.inner-start-page {
+    width: 100%;
+    max-height: 70%;
+}
+
+.start-page-form {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    border-radius: var(--r);
+    position: relative;
+}
+.start-page-btn {
+    background: linear-gradient(to right, rgba(255, 95, 90, 1) 0%, rgba(175, 47, 84, 1) 100%);
+    border: none;
+    border-radius: var(--r);
+    font-weight: 600;
+    width: 100%;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0;
+    margin: 0;
+}
+
+.btn-arrow {
+    position: absolute;
+    max-width: 60px;
+    width: calc(12px + 5%);
+    height: calc(12px + 10%);
+    mask-image: url(../images/button_arrow.png);
+    -webkit-mask-image: url(../images/button_arrow.png);
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    right: 5%;
+    bottom: 10%;
+    background: rgba(0, 250, 255, 1);
+}
+
+.start-page-form::before {
+    content: '';
+    position: absolute;
+    background: linear-gradient(to right, rgba(255, 95, 90, 1) 0%, rgba(175, 47, 84, 1) 100%);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 2px solid transparent;
+    z-index: -1;
+    margin: calc(var(--b) * -1);
+    border-radius: calc(var(--r) + var(--b));
+    background-origin: border-box;
+    background-clip: border-box;
+    mask: linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+}
+
+.button-text {
+    color: rgb(0, 250, 255);
+    margin-left: 5px;
+    max-width: minmax(200px, 60%);
+    text-align: left;
+    font-size: calc(10px + 50%);
+    left: 5%;
+    top: 20%;
+}

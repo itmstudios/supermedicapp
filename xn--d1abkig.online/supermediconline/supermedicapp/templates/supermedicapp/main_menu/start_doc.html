@@ -1,0 +1,23 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <form action="/update_work_time/" method="post" style="padding: none;" class="select-option" id="update-work-time">
+        {% csrf_token %}
+        <button type="submit" id="update-work-time-btn">
+            <span style="text-align: center">Обновить расписание</span>
+        </button>
+    </form>
+    <form action="/my_patients/" method="post" style="padding: none;" class="select-option" id="my-patients">
+        {% csrf_token %}
+        <button type="submit" id="my-patients-btn">
+            <span style="text-align: center">Мои пациенты</span>
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+    <script src=" {% static 'supermedicapp/js/main_menu/start_doc.js' %}?3.0"></script>
+{% endblock %}

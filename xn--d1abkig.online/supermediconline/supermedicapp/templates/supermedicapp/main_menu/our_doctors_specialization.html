@@ -1,0 +1,27 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text">Наши врачи</h3>
+<div class="container">
+    <div class="inner">
+        {% for specialization in specializations %}
+            <form action="/our_doctors/" method="get" class="specialist-page-form" id="select-specialization">
+                {% csrf_token %}
+                <button type="submit" class="button-row specialist-page-btn" data-specialization-id="{{ specialization.id }}">
+                    <p class="button-text">{{ specialization.name }}</p>
+                    <div class="btn-arrow"></div>
+                </button>
+            </form>
+        {% endfor %}
+        <div class="arrow-button arrow-button-scroll up-down-buttons">
+            <button id="up-button">↑</button>
+            <button id="down-button">↓</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/main_menu/our_doctors_specialization.js' %}?33.0"></script>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" data-specialization-id="{{ doctor_description.specialization.id }}"
+    data-doctor-id="{{ doctor_description.doctor.id }}">
+    <div class="image-info">
+        <img src="{{doctor_description.photo.url}}" alt="" class="doctor-image"><br>
+    </div>
+    <pre>{{ doctor_description.about }}</pre>
+    <div class="arrow-button arrow-button-scroll up-down-buttons">
+        <button id="up-button">↑</button>
+        <button id="down-button">↓</button>
+    </div>
+    <br>
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+</div>
+<!--<form action="/select_specialist/" method="post">-->
+<!--    {% csrf_token %}-->
+<!--    <button type="submit" id="temp-btn">-->
+<!--        <p>Dalee</p>-->
+<!--    </button>-->
+<!--</form>-->
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/patients_menu/doctors_info.js' %}?3.0"></script>
+{% endblock %}

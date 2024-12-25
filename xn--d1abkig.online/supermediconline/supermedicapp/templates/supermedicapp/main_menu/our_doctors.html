@@ -1,0 +1,61 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<h3 class="title-text">Наши врачи</h3>
+<div class="container">
+    <form action="/our_doctors_specialization/" method="post" style="padding: none;" class="specialist-page-form">
+        {% csrf_token %}
+        <button type="submit" id="select-specialization-btn" class="button-row specialist-page-btn">
+            {% if specialization %}
+            <div class="selected-block"></div>
+            <div class="selected-mark"></div>
+            <p class="button-text">{{ specialization.name }}</p>
+            {% else %}
+            <p class="button-text">Выберите специализацию</p>
+            <div class="btn-arrow"></div>
+            {% endif%}
+        </button>
+    </form>
+    {% if doctor_descriptions %}
+        {% for doctor_description in doctor_descriptions %}
+        <form action="/our_doctors_description/" method="post" id="doctor-form" style="padding: none;"
+        class="specialist-page-form">
+            {% csrf_token %}
+            <button type="submit" id="select-doctor-btn" class="button-row specialist-page-btn" data-doctor-id="{{ doctor_description.id }}">
+                <p class="button-text">{{ doctor_description.doctor.last_name }} {{ doctor_description.doctor.first_name }} {{ doctor_description.doctor.middle_name|default:" " }}</p>
+                <div class="btn-arrow"></div>
+            </button>
+        </form>
+        {% endfor %}
+    {% endif %}
+    <div class="arrow-button arrow-button-scroll up-down-buttons">
+        <button id="up-button">↑</button>
+        <button id="down-button">↓</button>
+    </div>
+
+<!--        <div class="image-info">-->
+<!--            <img src="{{doctor_description.photo.url}}" alt="" class="doctor-image"><br>-->
+<!--        </div><br>-->
+<!--        {{ doctor_description.doctor.last_name }} {{ doctor_description.doctor.first_name }} {{ doctor_description.doctor.middle_name|default:" " }}<br>-->
+<!--        <pre style="position: absolute, background: white;">{{ doctor_description.about }}</pre>-->
+<!--        <br>-->
+
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+    {% if specialization %}
+    {% else %}
+        <img class="doctor-img" src="{% static 'supermedicapp/images/portrait-of-adult-smiling-female-cosmetologist-doc.png' %}?3.0"/>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/other/back_button.js' %}"></script>
+<script src="{% static 'supermedicapp/js/main_menu/our_doctors.js' %}"></script>
+{% endblock %}

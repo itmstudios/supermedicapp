@@ -1,0 +1,50 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static%}
+
+{% block content %}
+<h3 class="title-text big"></h3>
+<div class="container" data-specialization-id="{% if specialization_id %}{{ specialization_id }}{% endif %}">
+    <div class="doctors-list">
+        {% if doctor_descriptions %}
+        <div class="inner">
+            {% for doctor_description in doctor_descriptions %}
+            <form action="/doctors_info/" method="post" id="doctor-form" class="doctor-card">
+                {% csrf_token %}
+                <div class="image-info">
+                    <img src="{{doctor_description.photo.url}}" alt="" class="doctor-image">
+                    <div class="doctor-info" style="justify-content: flex-start;">
+                        <p class="doctor-name">{{ doctor_description.doctor.last_name }} {{ doctor_description.doctor.first_name }} {{ doctor_description.doctor.middle_name|default:" " }}</p>
+                        <p class="speciality">{{ doctor_description.specialization.name }}<br>{{ doctor_description.medical_degree|default:" " }}</p>
+                        <p class="expierience">Стаж работы: {{ doctor_description.work_experience|default:" " }}</p>
+
+                    </div>
+                </div>
+<!--                <div class="doctor-services">-->
+<!--                    <div class="service">PLACEHOLDER 1</div>-->
+<!--                    <div class="service">PLACEHOLDER 2</div>-->
+<!--                    <div class="service">PLACEHOLDER 3</div>-->
+<!--                </div>-->
+                <button type="submit" class="price-form" data-doctor-id="{{ doctor_description.doctor.id }}"
+                            data-specialization-id="{{ doctor_description.specialization.id }}">
+                    <span class="price" style="text-align: center;">{{ doctor_description.consultation_price|default:" " }} ₽</span>
+                </button>
+            </form>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Не найдено врачей данной специализации</p>
+        {% endif %}
+        <form action="/text_to_admin/" method="post" class="specialist-footer">
+            {% csrf_token %}
+            <button type="submit" class="last-button button-row">
+                <p class="last-button-text">Задать вопрос администратору</p>
+                <div class="last-btn-arrow"></div>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block js_additional %}
+<script src=" {% static 'supermedicapp/js/patients_menu/doctors_list.js' %}?3.0"></script>
+{% endblock %}

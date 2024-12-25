@@ -1,0 +1,94 @@
+{% extends 'supermedicapp/main_menu/template.html' %}
+{% load static %}
+
+{% block content %}
+<h3 class="title-text">Выбор специалиста</h3>
+<div class="container" style="overflow: hidden; min-height: 0dvh;" data-specialization-id="{{ specialization.id }}" data-doctor-id="{{ doctor.id }}"
+    data-appointment-date="{{ appointment_date }}" data-appointment-time="{{ appointment_time }}">
+    <form action="/select_specialization/" method="post" style="padding: none;" class="specialist-page-form">
+        {% csrf_token %}
+        <button type="submit" id="select-specialization-btn" class="button-row specialist-page-btn">
+            {% if specialization %}
+            <div class="selected-block"></div>
+            <p class="button-text">{{ specialization.name }}</p>
+            <div class="selected-mark"></div>
+            {% else %}
+            <p class="button-text">Выберите специализацию</p>
+            <div class="btn-arrow"></div>
+            {% endif%}
+        </button>
+    </form>
+
+    <form action="/select_doctor/" method="post" id="doctor-block" style="display: none; padding: none;"
+    class="specialist-page-form">
+        {% csrf_token %}
+        <button type="submit" id="select-doctor-btn" class="button-row specialist-page-btn">
+            {% if doctor %}
+            <div class="selected-block"></div>
+            <div class="selected-mark"></div>
+            <p class="button-text">{{ doctor.last_name }} {{ doctor.first_name }} {{ doctor.middle_name|default:' '}}</p>
+            {% else %}
+            <p class="button-text">Выберите врача</p>
+            <div class="btn-arrow"></div>
+            {% endif%}
+        </button>
+    </form>
+
+    <form action="/select_date/" method="post" id="select-date-block" style="display: none; padding: none;"
+    class="specialist-page-form">
+        {% csrf_token %}
+        <button type="submit" id="select-date-btn" class="button-row specialist-page-btn">
+            {% if appointment_date %}
+            <div class="selected-block"></div>
+            <div class="selected-mark"></div>
+            <p class="button-text">{{ appointment_date }}</p>
+            {% else %}
+            <p class="button-text">Выберите дату</p>
+            <div class="btn-arrow"></div>
+            {% endif%}
+        </button>
+    </form>
+
+    <form action="/select_time/" method="post" id="time-block" style="display: none;" class="specialist-page-form">
+        {% csrf_token %}
+        <button type="submit" id="select-time-btn" class="button-row specialist-page-btn">
+            {% if appointment_time %}
+            <div class="selected-block"></div>
+            <div class="selected-mark"></div>
+            <p class="button-text">{{ appointment_time }}</p>
+            {% else %}
+            <p class="button-text">Выберите время</p>
+            <div class="btn-arrow"></div>
+            {% endif%}
+        </button>
+    </form>
+
+    <form action="/text_to_admin/" method="post" class="specialist-footer">
+        {% csrf_token %}
+        <button type="submit" class="last-button button-row">
+            <p class="last-button-text">Задать вопрос администратору</p>
+            <div class="last-btn-arrow"></div>
+        </button>
+    </form>
+
+    {% if specialization %}
+        <img class="doctor-img" style="height: 0dvh; min-height: 330px;" src="{% static 'supermedicapp/images/female-doctor-with-stethoscope.png' %}?3.0"/>
+    {% else %}
+        <img class="doctor-img" style="margin-bottom: auto;" src="{% static 'supermedicapp/images/portrait-of-adult-smiling-female-cosmetologist-doc.png' %}?3.0"/>
+    {% endif %}
+</div>
+<div class="arrow-button arrow-button-scroll up-down-buttons">
+    <button id="up-button">↑</button>
+    <button id="down-button">↓</button>
+</div>
+
+<!--<form action="/get_user_info/" method="post" id="appointment-btn" style="display: none;" class="select-option">-->
+<!--    {% csrf_token %}-->
+<!--    <button type="submit">ЗАПИСАТЬСЯ</button>-->
+<!--</form>-->
+{% endblock %}
+
+{% block js_additional %}
+<script src="{% static 'supermedicapp/js/other/back_button.js' %}"></script>
+<script src="{% static 'supermedicapp/js/patients_menu/select_specialist.js' %}?3.0"></script>
+{% endblock %}
