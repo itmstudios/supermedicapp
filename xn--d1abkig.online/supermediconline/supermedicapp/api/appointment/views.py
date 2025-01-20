@@ -1,15 +1,33 @@
 import logging
 
+from drf_spectacular.utils import (OpenApiParameter, OpenApiResponse,
+                                   extend_schema)
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.response import Response
-import supermedicapp.models as models
+from rest_framework.views import APIView
+
 import supermedicapp.api.appointment.serializers as serializers
+import supermedicapp.models as models
 
 logger = logging.getLogger(__name__)
 
 
 class AppointmentView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='appointment_id', required=False, type=int),
+            OpenApiParameter(name='patient_id', required=False, type=int),
+            OpenApiParameter(name='is_notified', required=False, type=bool),
+            OpenApiParameter(name='is_deleted', required=False, type=bool),
+        ],
+        responses={
+            200: serializers.AppointmentGetSerializer,
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.AppointmentErrorResponseSerializer,
+            )
+        },
+    )
     def get(self, request):
         appointment_id = request.GET.get("appointment_id")
         patient_id = request.GET.get("patient_id")
@@ -43,6 +61,16 @@ class AppointmentView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
+    @extend_schema(
+        request=serializers.AppointmentUpdateSerializer,
+        responses={
+            200: OpenApiResponse(description="Ok"),
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.AppointmentErrorResponseSerializer,
+            ),
+        },
+    )
     def patch(self, request):
         serializer = serializers.AppointmentUpdateSerializer(data=request.data)
         if serializer.is_valid():

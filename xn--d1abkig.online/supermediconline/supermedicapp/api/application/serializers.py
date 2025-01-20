@@ -2,6 +2,10 @@ from rest_framework import serializers
 import supermedicapp.models as models
 
 
+class ApplicationErrorResponseSerializer(serializers.Serializer):
+    error = serializers.CharField(help_text="Error message details.")
+
+
 class ApplicationGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Application

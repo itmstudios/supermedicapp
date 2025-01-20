@@ -1,11 +1,29 @@
+from drf_spectacular.utils import (OpenApiParameter, OpenApiResponse,
+                                   extend_schema)
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.response import Response
-import supermedicapp.models as models
+from rest_framework.views import APIView
+
 import supermedicapp.api.application.serializers as serializers
+import supermedicapp.models as models
 
 
 class ApplicationView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='appointment_id', required=False, type=int),
+            OpenApiParameter(name='patient_id', required=False, type=int),
+            OpenApiParameter(name='is_notified', required=False, type=bool),
+            OpenApiParameter(name='is_deleted', required=False, type=bool),
+        ],
+        responses={
+            200: serializers.ApplicationGetSerializer,
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.ApplicationErrorResponseSerializer,
+            )
+        },
+    )
     def get(self, request):
         id = request.GET.get("id")
         appointment_id = request.GET.get("appointment_id")
@@ -47,6 +65,16 @@ class ApplicationView(APIView):
             except Exception as e:
                 return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        request=serializers.ApplicationUpdateSerializer,
+        responses={
+            200: OpenApiResponse(description="Ok"),
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.ApplicationErrorResponseSerializer,
+            ),
+        },
+    )
     def patch(self, request):
         serializer = serializers.ApplicationUpdateSerializer(data=request.data)
         if serializer.is_valid():
