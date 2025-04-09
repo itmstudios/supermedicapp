@@ -1,11 +1,28 @@
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-import supermedicapp.models as models
 import supermedicapp.api.doctor_description.serializers as serializers
+import supermedicapp.models as models
+from drf_spectacular.utils import (
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+)
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class DoctorDescriptionView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='doctor_description_id', required=False, type=int),
+        ],
+        responses={
+            200: serializers.DoctorGetSerializer,
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.DoctorErrorResponseSerializer,
+            )
+        },
+    )
     def get(self, request):
         doctor_description_id = request.GET.get("id")
         try:

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "supermedicapp",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "supermediconline.wsgi.application"
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

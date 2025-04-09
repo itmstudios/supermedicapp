@@ -1,14 +1,116 @@
 from datetime import datetime, timedelta
 
 import pytz
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-import supermedicapp.models as models
 import supermedicapp.api.user_step.serializers as serializers
+import supermedicapp.models as models
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+)
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class UserStepView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='select_specialization_step',
+                required=False,
+                type=str,
+                examples=[
+                    OpenApiExample(
+                        'select_specialization_step_example_default',
+                        summary='Select specialization',
+                        value='',
+                    ),
+                    OpenApiExample(
+                        'select_specialization_step_example_false',
+                        summary='Do not select specialization',
+                        value='False',
+                    ),
+                ]
+            ),
+            OpenApiParameter(
+                name='select_doctor_step',
+                required=False,
+                type=str,
+                examples=[
+                    OpenApiExample(
+                        'select_doctor_step_example_default',
+                        summary='Select doctor',
+                        value='',
+                    ),
+                    OpenApiExample(
+                        'select_doctor_step_example_false',
+                        summary='Do not select doctor',
+                        value='False',
+                    ),
+                ]
+            ),
+            OpenApiParameter(
+                name='select_date_step',
+                required=False,
+                type=str,
+                examples=[
+                    OpenApiExample(
+                        'select_date_step_example_default',
+                        summary='Select date',
+                        value='',
+                    ),
+                    OpenApiExample(
+                        'select_date_step_example_false',
+                        summary='Do not select date',
+                        value='False',
+                    ),
+                ]
+            ),
+            OpenApiParameter(
+                name='select_time_step',
+                required=False,
+                type=str,
+                examples=[
+                    OpenApiExample(
+                        'select_time_step_example_default',
+                        summary='Select time',
+                        value='',
+                    ),
+                    OpenApiExample(
+                        'select_time_step_example_false',
+                        summary='Do not select time',
+                        value='False',
+                    ),
+                ]
+            ),
+            OpenApiParameter(
+                name='user_info_step',
+                required=False,
+                type=str,
+                examples=[
+                    OpenApiExample(
+                        'select_info_step_example_default',
+                        summary='Select info',
+                        value='',
+                    ),
+                    OpenApiExample(
+                        'select_info_step_example_false',
+                        summary='Do not select info',
+                        value='False',
+                    ),
+                ]
+            ),
+        ],
+        responses={
+            200: serializers.UserStepGetSerializer,
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.UserStepErrorResponseSerializer,
+            )
+        },
+    )
     def get(self, request):
         select_specialization_step = request.GET.get("select_specialization_step")
         select_doctor_step = request.GET.get("select_doctor_step")
@@ -66,6 +168,16 @@ class UserStepView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        request=serializers.UserStepUpdateSerializer,
+        responses={
+            200: OpenApiResponse(description="Ok"),
+            400: OpenApiResponse(
+                description="Error message",
+                response=serializers.UserStepErrorResponseSerializer,
+            ),
+        },
+    )
     def patch(self, request):
         serializer = serializers.UserStepUpdateSerializer(data=request.data)
         if serializer.is_valid():
