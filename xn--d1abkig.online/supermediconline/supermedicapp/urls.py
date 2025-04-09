@@ -148,3 +148,18 @@ urlpatterns_api = [
 ]
 
 urlpatterns += urlpatterns_api
+
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import viewsets
+
+router = DefaultRouter()
+router.register(r'home', viewsets.HomeViewSet, basename='home')
+router.register(r'user', viewsets.UserViewSet, basename='user')
+router.register(r'specialization', viewsets.SpecializationViewSet, basename='specialization')
+router.register(r'doctor', viewsets.DoctorViewSet, basename='doctor')
+router.register(r'appointment', viewsets.AppointmentViewSet, basename='appointment')
+
+urlpatterns += [
+    path('api/', include(router.urls)),
+]
