@@ -17,7 +17,7 @@ SECRET_KEY = "django-insecure-z3hq(y+)l5xr1t*ik*&m+nh49+6mee0*xj-k@a7#f&q*_2fh@5
 # )
 
 DEBUG = os.getenv("DEBUG") == "True"
-
+DEBUG = True
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
     DATABASES = {
