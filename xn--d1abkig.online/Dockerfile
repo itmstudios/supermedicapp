@@ -4,24 +4,35 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_VERSION=1.6.1
 
-# Установка зависимостей системы
+# Install system dependencies (including pkg-config and MySQL client headers)
 RUN apt-get update && apt-get install -y \
-    curl build-essential libpq-dev git \
-    && apt-get clean
+    curl \
+    build-essential \
+    python3-dev \
+    libpq-dev \
+    git \
+    pkg-config \
+    default-libmysqlclient-dev \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
-# Установка Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - && \
-    ln -s /root/.local/bin/poetry /usr/local/bin/poetry
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 - \
+  && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
 WORKDIR /app
 
-# Копируем только pyproject и poetry.lock сначала (для кэширования install)
+# Copy only lock files first for better layer caching
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+# Install python dependencies system‑wide
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
 
-# Копируем оставшийся код
+# Copy the rest of your application code
 COPY . .
 
-# Даём права на запуск entrypoint
+# Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh
+
+# let docker-compose handle the final up
