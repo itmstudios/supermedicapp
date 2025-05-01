@@ -3,7 +3,8 @@ version: "3.9"
 services:
   web:
     build: .
-    entrypoint: ["/bin/sh", "-c", "/app/entrypoint.sh"]
+    # Сначала даём бит "x" внутри контейнера, а потом запускаем скрипт
+    entrypoint: ["/bin/sh", "-c", "chmod +x /app/entrypoint.sh && exec /app/entrypoint.sh"]
     volumes:
       - .:/app
     ports:
