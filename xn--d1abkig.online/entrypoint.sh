@@ -1,12 +1,11 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
 echo "Apply database migrations..."
-python manage.py migrate
+python ./supermediconline/manage.py migrate --noinput
 
 echo "Collect static files..."
-python manage.py collectstatic --noinput
+python ./supermediconline/manage.py collectstatic --noinput
 
 echo "Starting Gunicorn..."
-exec gunicorn supermediconline.wsgi:application \
-    --bind 0.0.0.0:8000 \
-    --workers 4
+exec gunicorn supermediconline.wsgi:application --bind 0.0.0.0:8000
