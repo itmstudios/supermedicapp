@@ -1,13 +1,11 @@
 FROM python:3.11-slim
 
-# Отключаем запись pyc-файлов и буферизацию вывода Python
+# Отключаем запись байткодов и буферизацию вывода Python
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-
-# Версия Poetry
 ENV POETRY_VERSION=1.6.1
 
-# Устанавливаем системные зависимости (включая pkg-config и заголовки MySQL)
+# Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y \
     curl \
     build-essential \
@@ -19,24 +17,26 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем Poetry
+# Ставим Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 - \
   && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
 WORKDIR /app
 
-# Копируем только lock-файлы для лучшего кеширования слоёв
+# Копируем pyproject.toml и poetry.lock для кеширования слоёв
 COPY pyproject.toml poetry.lock ./
 
-# Устанавливаем зависимости (только библиотеки, без установки корневого пакета)
+# Устанавливаем все зависимости из lock-файла, без попытки установить сам проект
+# Затем дополняем окружение gunicorn'ом через pip, обойдя несовместимость lock-файла
 RUN poetry config virtualenvs.create false \
-  && poetry install --no-interaction --no-ansi --no-root
+  && poetry install --no-interaction --no-ansi --no-root \
+  && pip install --no-cache-dir gunicorn==20.1.0
 
-# Копируем остальной код приложения
+# Копируем весь код приложения
 COPY . .
 
-# Делаем entrypoint исполняемым
+# Даем права на исполнение entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Точка входа
+# Точка входа — переопределяется в docker-compose, но пусть будет запасная
 ENTRYPOINT ["/app/entrypoint.sh"]
