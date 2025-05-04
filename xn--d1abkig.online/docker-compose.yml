@@ -3,8 +3,6 @@ version: "3.9"
 services:
   web:
     build: .
-    # при старте даём +x и запускаем наш скрипт
-    entrypoint: ["/bin/sh", "-c", "chmod +x /app/entrypoint.sh && exec /app/entrypoint.sh"]
     volumes:
       - .:/app
     ports:
