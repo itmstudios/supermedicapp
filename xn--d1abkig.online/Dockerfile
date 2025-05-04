@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sSL https://install.python-poetry.org | python3 - \
   && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
-WORKDIR /app
+WORKDIR /app/supermediconline
 
 # Кешируем зависимос­ти
 COPY pyproject.toml poetry.lock ./
