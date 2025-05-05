@@ -26,12 +26,14 @@ if DEBUG:
         }
     }
 else:
-    ALLOWED_HOSTS = [
-        "медик.online",
-        "www.медик.online",
-        "xn--d1abkig.online",
-        "www.xn--d1abkig.online",
-    ]
+    # ALLOWED_HOSTS = [
+    #     "медик.online",
+    #     "www.медик.online",
+    #     "xn--d1abkig.online",
+    #     "www.xn--d1abkig.online",
+    # ]
+    ALLOWED_HOSTS = ["*"]
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
