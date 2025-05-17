@@ -35,3 +35,8 @@ class UserStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStep
         fields = '__all__'
+
+class SaveTgIDSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    telegram_username = serializers.CharField()
+    telegram_id = serializers.CharField()

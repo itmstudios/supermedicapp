@@ -22,8 +22,9 @@ from .serializers import (
     HelpInfoSerializer,
     SpecializationSerializer,
     UserSerializer,
-    UserStepSerializer,
+    UserStepSerializer, SaveTgIDSerializer,
 )
+from rest_framework import viewsets, status
 
 logger = logging.getLogger(__name__)
 
@@ -104,10 +105,14 @@ class UserViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["post"])
     def save_tg_id(self, request):
-        request.session["name"] = request.data.get("name")
-        request.session["telegram_username"] = request.data.get("telegram_username")
-        request.session["telegram_id"] = request.data.get("telegram_id")
-        return Response({"status": "success"})
+        serializer = SaveTgIDSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            request.session["name"] = data["name"]
+            request.session["telegram_username"] = data["telegram_username"]
+            request.session["telegram_id"] = data["telegram_id"]
+            return Response({"status": "success"})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["get", "post"])
     def get_user_info(self, request):
